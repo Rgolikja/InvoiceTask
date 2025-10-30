@@ -3,69 +3,51 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Import;
+use App\Services\Interfaces\ImportServiceInterface;
 
 class ImportController extends Controller
 {
-    public function index()
+    protected $importService;
+
+    public function __construct(ImportServiceInterface $importService)
     {
-        $imports = Import::all();
-        return response()->json($imports);
+        $this->importService = $importService;
     }
 
-    public function store(Request $request)
+    public function index()
     {
-        // 1. Validate the uploaded file
+        return response()->json($this->importService->getAllImports(10));
+    }
 
-        $request->validate([
-            'file' => 'required|mimes:jpg,png,pdf|max:2048'
+    public function importExcelData(Request $request)
+    {
+        $import = $this->importService->importExcelData($request);
+        return response()->json([
+            'message' => 'File imported successfully',
+            'import' => $import,
         ]);
-        // 2. Check if a file was actually uploaded
-
-        if ($request->hasFile('file')) {
-            // 3. Get the uploaded file
-
-            $file = $request->file('file');
-            // 4. Store the file on a specified disk public/imports
-            $path = $file->store('imports', 'public');
-            // save the file info
-            $import = Import::create([
-                'file_name' => $request->file('file')->getClientOriginalName(),
-                'file_path' => $path,
-                'status' => 'uploaded'
-            ]);
-            return response()->json([
-                'message' => 'File Uploaded Succesfully',
-                'import' => $import
-            ]);
-        }
     }
 
     public function update(Request $request, $id)
     {
-        //Fin the import by id or throw exeption
-        $import = Import::findOrFail($id);
-        //validate data
-        $validated = $request->validate([
-            'status' => $request->status ?? $import->status,
-        ]);
+        $import = $this->importService->updateImport($id, $request);
         return response()->json([
-            'message' => 'Import Succesful',
+            'message' => 'Import updated successfully',
             'import' => $import,
         ]);
     }
 
     public function destroy($id)
     {
-        $import = Import::findOrFail($id);
-
-        if (Storage::disk('public')->exists($import->file_path)) {
-            Storage::disk('public')->delete($import->file_path);
-        }
-        $import->delete();
-
+        $this->importService->deleteImport($id);
         return response()->json([
-            'message' => 'Import deleted successfully'
+            'message' => 'Import deleted successfully',
         ]);
     }
+    public function show($id)
+{
+    $import = $this->importService->getImportById($id);
+    return response()->json($import);
+}
+
 }
