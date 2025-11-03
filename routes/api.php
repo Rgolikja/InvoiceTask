@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ElifController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImportController;
 use App\Http\Controllers\InvoiceController;
@@ -35,7 +36,7 @@ Route::post('/test-import', function () {
 
 Route::get('/imports/{id}', [ImportController::class, 'show']);
 
-
+Route::get('/login', [ElifController::class, 'login']);
 //ADMIN ROUTES
 // Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 //route to upload an import
