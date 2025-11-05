@@ -17,11 +17,21 @@ Route::get('/invoices/{id}', [InvoiceController::class, 'show']);
 //route to all imports
 Route::get('/imports', [ImportController::class, 'index']);
 
+Route::get('/imports/{id}', [ImportController::class, 'show']);
 
 
 //AUTH ROUTES
 //route to login
-Route::post('/login', [AuthController::class, 'login']);
+// Route::post('/login', [AuthController::class, 'login']);
+
+
+
+
+// //ADMIN ROUTES
+// Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+
+
+//route to upload an import
 Route::post('/imports', [ImportController::class, 'importExcelData']);
 
 //route to update an import
@@ -29,14 +39,15 @@ Route::put('/imports/{id}', [ImportController::class, 'update']);
 
 //route to delete an import
 Route::delete('/imports/{id}', [ImportController::class, 'destroy']);
+
+Route::get('/fiscalize/{invoice}', [ElifController::class, 'fiscalize']);//route to fiscalize
+
+
 // });
-Route::post('/test-import', function () {
-    return response()->json(['message' => 'Route works']);
-});
 
-Route::get('/imports/{id}', [ImportController::class, 'show']);
 
-Route::get('/login', [ElifController::class, 'login']);
-//ADMIN ROUTES
-// Route::middleware(['auth:sanctum', 'admin'])->group(function () {
-//route to upload an import
+
+
+
+//we have the login for our project and we access the login for elif while we fiscalize
+// Route::get('/login', action: [ElifController::class, 'login']);

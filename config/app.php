@@ -73,6 +73,7 @@ return [
         /*
          * Laravel Framework Service Providers...
          */
+        Illuminate\Hashing\HashServiceProvider::class,
         Illuminate\Foundation\Providers\FoundationServiceProvider::class,  // <--- REQUIRED
         Illuminate\Auth\AuthServiceProvider::class,
         Illuminate\Broadcasting\BroadcastServiceProvider::class,
@@ -115,6 +116,7 @@ return [
     |--------------------------------------------------------------------------
     */
     'aliases' => [
+        'Hash' => Illuminate\Support\Facades\Hash::class,
         'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,

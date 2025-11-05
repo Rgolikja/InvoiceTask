@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Services\Interfaces\ImportServiceInterface;
+use App\Services\ImportService;
 
 class ImportController extends Controller
 {
     protected $importService;
 
-    public function __construct(ImportServiceInterface $importService)
+    public function __construct(ImportService $importService)
     {
         $this->importService = $importService;
     }
@@ -21,19 +21,16 @@ class ImportController extends Controller
 
     public function importExcelData(Request $request)
     {
-        $import = $this->importService->importExcelData($request);
-        return response()->json([
-            'message' => 'File imported successfully',
-            'import' => $import,
-        ]);
+        $result = $this->importService->importExcelData($request);
+        return response()->json($result);
     }
 
     public function update(Request $request, $id)
     {
-        $import = $this->importService->updateImport($id, $request);
+        $result = $this->importService->updateImport($id, $request);
         return response()->json([
             'message' => 'Import updated successfully',
-            'import' => $import,
+            'import' => $result,
         ]);
     }
 
@@ -44,10 +41,10 @@ class ImportController extends Controller
             'message' => 'Import deleted successfully',
         ]);
     }
-    public function show($id)
-{
-    $import = $this->importService->getImportById($id);
-    return response()->json($import);
-}
 
+    public function show($id)
+    {
+        $import = $this->importService->getImportById($id);
+        return response()->json($import);
+    }
 }

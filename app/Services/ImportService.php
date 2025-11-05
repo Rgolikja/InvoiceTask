@@ -2,225 +2,258 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\DB;
-use App\Models\Import;
 use App\Models\Client;
 use App\Models\Invoice;
 use App\Models\InvoiceItem;
+use App\Models\Import;
 use App\Services\Interfaces\ImportServiceInterface;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Maatwebsite\Excel\Facades\Excel;
 
 class ImportService implements ImportServiceInterface
 {
-    public function importExcelData(Request $request)
+    public function importExcelData($request)
     {
-        $request->validate([
-            'file' => 'required|mimes:xlsx,xls,csv|max:20480',
-        ]);
+        $debug = [];
+        $summary = [
+            'invoices_created' => 0,
+            'clients_linked' => 0,
+            'items_created' => 0,
+        ];
 
-        $file = $request->file('file');
-        $originalName = $file->getClientOriginalName();
-        $path = $file->storeAs('imports', $originalName, 'public');
-
-        $import = Import::create([
-            'file_name' => $originalName,
-            'file_path' => $path,
-            'status' => 'processed',
-        ]);
-
-        $errors = [];
-        $rowsTotal = 0;
-        $rowsImported = 0;
+        DB::beginTransaction();
 
         try {
-            $sheets = Excel::toCollection(null, storage_path('app/public/' . $path));
-            if ($sheets->isEmpty()) {
-                throw new \Exception('Excel file empty');
+            if (!$request->hasFile('file')) {
+                throw new Exception('No Excel file uploaded.');
             }
 
-            $rows = $sheets->first();
-            $rowsTotal = $rows->count();
+            $file = $request->file('file');
+            $spreadsheet = IOFactory::load($file->getRealPath());
+            $sheet = $spreadsheet->getActiveSheet();
+            $rows = $sheet->toArray(null, true, true, true);
 
             $currentInvoice = null;
-            $currentClient = null;
-            $headerFound = false;
+            $mode = 'searching_header';
 
-            DB::beginTransaction();
-
-            foreach ($rows as $row) {
-                $r = is_array($row) ? $row : $row->toArray();
-                $values = array_map(fn($v) => trim((string) $v), $r);
-                if (count(array_filter($values)) === 0) {
+            foreach ($rows as $index => $row) {
+                $line = trim(implode('', array_map('strval', $row)));
+                if ($line === '' || stripos($line, 'Regjistri') !== false)
                     continue;
-                }
 
-                $line = implode(' ', $values);
+                /*** 🧾 Detect invoice header ***/
+                if (isset($row['A']) && stripos($row['A'], 'Nr:') !== false) {
+                    $invoiceNumber = trim(str_replace('Nr:', '', ($row['A'] ?? '') . ' ' . ($row['B'] ?? '')));
+                    $invoiceNumber = preg_replace('/[^A-Z0-9]/i', '', $invoiceNumber);
 
-                // Detect invoice start
-                if (str_contains($line, 'Nr: FSH')) {
-                    preg_match('/Nr:\s*(FSH\d+)/', $line, $nrMatch);
-                    preg_match('/Date dokumenti:\s*([\d\/]+)/', $line, $dateMatch);
-                    preg_match('/Monedha:\s*(\w+)/', $line, $currMatch);
+                    $debug[] = "Row[$index]: Detected header (A='{$row['A']}', B='{$row['B']}') → invoiceNumber='{$invoiceNumber}'";
 
-                    $invoiceNumber = $nrMatch[1] ?? null;
-                    $date = isset($dateMatch[1]) ? date('Y-m-d', strtotime(str_replace('/', '-', $dateMatch[1]))) : null;
-                    $currency = $currMatch[1] ?? 'EUR';
+                    $invoiceDate = null;
+                    $currency = 'EUR';
+                    foreach ($row as $cell) {
+                        $cell = (string) $cell;
+                        if (stripos($cell, 'Date dokumenti:') !== false) {
+                            $invoiceDate = trim(str_replace('Date dokumenti:', '', $cell));
+                        }
+                        if (stripos($cell, 'Monedha:') !== false) {
+                            $currency = trim(str_replace('Monedha:', '', $cell));
+                        }
+                    }
 
-                    if (!$invoiceNumber) {
+                    if ($invoiceNumber === '') {
+                        $debug[] = "Row[$index]: Missing invoice number — skipping.";
+                        $currentInvoice = null;
+                        $mode = 'searching_header';
                         continue;
                     }
 
-                    // Save previous invoice items done
-                    $currentInvoice = Invoice::firstOrCreate(
-                        ['invoice_number' => $invoiceNumber],
-                        ['invoice_date' => $date, 'currency' => $currency, 'base_currency' => 'ALL']
+                    /*** 👤 Detect client info ***/
+                    $clientCode = null;
+                    $clientName = null;
+                    for ($i = 1; $i <= 3; $i++) {
+                        if (!isset($rows[$index + $i]))
+                            break;
+                        $nextRow = $rows[$index + $i];
+                        foreach ($nextRow as $col => $value) {
+                            $value = (string) $value;
+                            if (stripos($value, 'Klienti:') !== false) {
+                                $nextCol = chr(ord($col) + 1);
+                                $clientCode = trim($nextRow[$nextCol] ?? '');
+                            }
+                            if (stripos($value, 'Emri:') !== false) {
+                                $nextCol = chr(ord($col) + 1);
+                                $clientName = trim($nextRow[$nextCol] ?? '');
+                            }
+                        }
+                        if ($clientCode && $clientName)
+                            break;
+                    }
+
+                    if (!$clientCode) {
+                        $debug[] = "Row[$index]: Missing client code for {$invoiceNumber}.";
+                        $currentInvoice = null;
+                        $mode = 'searching_header';
+                        continue;
+                    }
+
+                    $client = Client::firstOrCreate(
+                        ['code' => $clientCode],
+                        ['name' => $clientName ?? 'Unknown']
                     );
 
-                    $headerFound = false; // Reset header detection for new invoice
-                    continue;
-                }
-
-                // Detect client info
-                if (str_contains($line, 'Klienti') && str_contains($line, 'Emri')) {
-                    preg_match('/Emri\s*:\s*(.*)/', $line, $nameMatch);
-                    $clientName = $nameMatch[1] ?? 'Unknown';
-
-                    $currentClient = Client::firstOrCreate(['name' => $clientName]);
-
-                    if ($currentInvoice) {
-                        $currentInvoice->update(['client_id' => $currentClient->id]);
+                    if ($client->wasRecentlyCreated) {
+                        $summary['clients_linked']++;
+                        $debug[] = "Created new client: {$clientCode} ({$clientName})";
+                    } else {
+                        $debug[] = "Found existing client: {$clientCode}";
                     }
+
+                    $existing = Invoice::where('invoice_number', $invoiceNumber)->first();
+                    if ($existing) {
+                        $currentInvoice = $existing;
+                        $debug[] = "Reusing existing invoice {$invoiceNumber}.";
+                    } else {
+                        $currentInvoice = Invoice::create([
+                            'client_id' => $client->id,
+                            'invoice_number' => $invoiceNumber,
+                            'invoice_date' => $this->parseDate($invoiceDate) ?? now(),
+                            'currency' => $currency ?: 'EUR',
+                            'total_amount_eur' => null,
+                            'total_with_vat' => null,
+                            'total_amount_all' => null,
+                        ]);
+                        $summary['invoices_created']++;
+                        $debug[] = "Created new invoice {$invoiceNumber}.";
+                    }
+
+                    $mode = 'reading_items';
                     continue;
                 }
 
-                // Detect product header
-                if (!$headerFound && isset($values[0]) && stripos($values[0], 'Kase Telefoni') === false && stripos($values[0], 'Përshkrimi') !== false) {
-                    $headerFound = true;
-                    continue;
-                }
+                /*** 📦 Detect item rows ***/
+                if ($mode === 'reading_items' && $currentInvoice) {
+                    // Detect totals
+                    if (stripos($line, 'Shuma me TVSH') !== false || stripos($line, 'Shuma pa TVSH') !== false) {
+                        preg_match_all('/([\d\.,]+)/', $line, $matches);
+                        $eurTotal = isset($matches[1][0]) ? $this->toDecimal($matches[1][0]) : 0;
+                        $allTotal = isset($matches[1][1]) ? $this->toDecimal($matches[1][1]) : 0;
 
-                // Detect end of invoice (Shuma pa TVSH)
-                if (str_contains($line, 'Shuma pa TVSH')) {
-                    $headerFound = false; // Done with items for this invoice
-                    $currentInvoice = null; // Reset current invoice
-                    continue;
-                }
+                        $currentInvoice->update([
+                            'total_amount_eur' => $eurTotal,
+                            'total_with_vat' => $eurTotal,
+                            'total_amount_all' => $allTotal,
+                        ]);
 
-                // Add product items if header found
-                if ($headerFound && $currentInvoice && !empty($values[0])) {
+                        $debug[] = "💶 Updated totals for invoice {$currentInvoice->invoice_number}: EUR={$eurTotal}, ALL={$allTotal}";
+                        $mode = 'searching_header';
+                        continue;
+                    }
 
-                    // Map Excel columns correctly
-                    $productName = $values[0] ?? 'Unknown';
-                    $unit = $values[1] ?? null;
-                    $quantity = $this->toDecimal($values[2] ?? 0);
-                    $unitPrice = $this->toDecimal($values[3] ?? 0);
-                    $totalPrice = $this->toDecimal($values[4] ?? 0);
-                    $vatAmount = $this->toDecimal($values[5] ?? 0);
-                    $totalWithVat = $this->toDecimal($values[6] ?? 0);
-                    $description = $values[7] ?? null;
+                    // Detect product lines
+                    if ($row['A'] && !str_starts_with($row['A'], 'Klienti:')) {
+                        $productName = trim($row['A']);
+                        $unit = trim($row['B'] ?? ''); // ✅ Unit column (B)
+                        $values = array_values($row);
+                        $numbers = [];
 
-                    // Ensure quantity is at least 0 to avoid NOT NULL error
-                    if ($quantity === null)
-                        $quantity = 0;
+                        // Collect all numeric values
+                        foreach ($values as $v) {
+                            if (preg_match('/^\d+([.,]\d+)?$/', trim($v))) {
+                                $numbers[] = $this->toDecimal($v);
+                            }
+                        }
 
-                    InvoiceItem::create([
-                        'invoice_id' => $currentInvoice->id,
-                        'product_name' => $productName,
-                        'unit' => $unit,
-                        'quantity' => $quantity,
-                        'unit_price' => $unitPrice,
-                        'total_price' => $totalPrice,
-                        'vat_amount' => $vatAmount,
-                        'description' => $description,
-                    ]);
+                        // ✅ Map numeric columns (Layout A)
+                        $quantity = $numbers[0] ?? 0;
+                        $unitPrice = $numbers[1] ?? 0;
+                        $totalPrice = $numbers[2] ?? 0;
+                        $totalAll = $numbers[count($numbers) - 1] ?? 0; // ✅ last numeric = ALL
 
-                    $rowsImported++;
+                        // ✅ Description is last non-numeric text
+                        $description = '';
+                        foreach (array_reverse($values) as $v) {
+                            $v = trim((string) $v);
+                            if ($v !== '' && !preg_match('/^\d+([.,]\d+)?$/', $v)) {
+                                $description = $v;
+                                break;
+                            }
+                        }
+
+                        if ($productName === '' || $totalPrice == 0)
+                            continue;
+
+                        InvoiceItem::create([
+                            'invoice_id' => $currentInvoice->id,
+                            'product_name' => $productName,
+                            'unit' => $unit,
+                            'quantity' => $quantity,
+                            'unit_price' => $unitPrice,
+                            'total_price' => $totalPrice,
+                            'vat_amount' => 0,
+                            'description' => $description,
+                        ]);
+
+                        // ✅ Update invoice totals
+                        $currentInvoice->update([
+                            'total_amount_eur' => $totalPrice,
+                            'total_with_vat' => $totalPrice,
+                            'total_amount_all' => $totalAll,
+                        ]);
+
+                        $summary['items_created']++;
+                        $debug[] = "🧩 Added '{$productName}' (Unit={$unit}, Qty={$quantity}, Price={$unitPrice}, EUR={$totalPrice}, ALL={$totalAll}, Desc='{$description}').";
+                    }
                 }
             }
 
             DB::commit();
 
-            $import->update([
-                'status' => empty($errors) ? 'completed' : 'failed',
-                'rows_total' => $rowsTotal,
-                'rows_imported' => $rowsImported,
-                'error_message' => empty($errors) ? null : implode("\n", $errors),
-            ]);
-        } catch (\Throwable $e) {
+            return [
+                'message' => 'File imported successfully',
+                'debug' => $debug ?: ['Import completed successfully'],
+                'summary' => $summary,
+            ];
+
+        } catch (Exception $e) {
             DB::rollBack();
-            $import->update([
-                'status' => 'failed',
-                'error_message' => $e->getMessage(),
-            ]);
-            Log::error('Import failed: ' . $e->getMessage(), ['exception' => $e]);
-            throw $e;
+            Log::error('Import failed: ' . $e->getMessage());
+            return [
+                'message' => 'Import failed',
+                'error' => $e->getMessage(),
+            ];
         }
-
-        return $import;
     }
 
-    protected function toDecimal($value)
+    private function toDecimal($value)
     {
-        if ($value === null || $value === '')
-            return 0;
-
-        $s = str_replace([' ', "\u{00A0}"], '', (string) $value);
-
-        if (substr_count($s, ',') > 0 && substr_count($s, '.') > 0) {
-            $s = str_replace('.', '', $s);
-            $s = str_replace(',', '.', $s);
-        } elseif (substr_count($s, ',') > 0 && substr_count($s, '.') === 0) {
-            $s = str_replace(',', '.', $s);
-        }
-
-        $s = preg_replace('/[^\d\.\-]/', '', $s);
-
-        return $s === '' || $s === '.' || $s === '-' ? 0 : (float) $s;
+        return floatval(str_replace([',', ' '], ['.', ''], $value));
     }
 
-    // Optional CRUD helpers
-    public function deleteImport(int $id)
+    private function parseDate($value)
     {
-        $import = Import::findOrFail($id);
-        if (Storage::disk('public')->exists($import->file_path)) {
-            Storage::disk('public')->delete($import->file_path);
-        }
-        $import->delete();
-        return response()->json(['deleted' => true]);
-    }
-
-    public function deleteAllImports()
-    {
-        $imports = Import::all();
-        foreach ($imports as $import) {
-            if (Storage::disk('public')->exists($import->file_path)) {
-                Storage::disk('public')->delete($import->file_path);
-            }
-            $import->delete();
-        }
-        return response()->json(['deleted_all' => true]);
-    }
-
-    public function getAllImports(int $perPage = 10)
-    {
-        return Import::paginate($perPage);
-    }
-
-    public function getImportById(int $id)
-    {
-        return Import::findOrFail($id);
+        $date = \DateTime::createFromFormat('d/m/Y', trim($value));
+        return $date ?: null;
     }
 
     public function updateImport(int $id, Request $request)
     {
         $import = Import::findOrFail($id);
-        $validated = $request->validate([
-            'status' => 'required|string|in:processed,completed,failed',
-        ]);
-        $import->update($validated);
+        $import->update($request->only(['status', 'error_message']));
         return $import;
+    }
+
+    public function deleteImport(int $id)
+    {
+        $import = Import::findOrFail($id);
+        $import->delete();
+        return true;
+    }
+
+    public function getAllImports(int $perPage)
+    {
+        return Import::orderBy('created_at', 'desc')->paginate($perPage);
     }
 }

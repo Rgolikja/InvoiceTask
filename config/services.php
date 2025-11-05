@@ -35,4 +35,13 @@ return [
         ],
     ],
 
+    'elif' => [
+        'base_url' => ENV('ELIF_BASE_URL'),
+        'db_config' => ENV('ELIF_DB_CONFIG'),
+        'company_db_name' => ENV('ELIF_COMPANY_DB_NAME'),
+        'hardware_id' => ENV('ELIF_HARDWARE_ID'),
+        'username' => ENV('ELIF_USERNAME'),
+        'user_id' => ENV('ELIF_USER_ID'),
+    ],
+
 ];
