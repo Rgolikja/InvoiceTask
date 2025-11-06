@@ -1,8 +1,8 @@
 <?php
 namespace App\Models;
-use Client;
+use App\Models\Client;
 use Illuminate\Database\Eloquent\Model;
-use InvoiceItem;
+use App\Models\InvoiceItem;
 
 
 class Invoice extends Model
@@ -24,6 +24,6 @@ class Invoice extends Model
     }
     public function items()
     {
-        return $this->hasMany(InvoiceItem::class);
+        return $this->hasMany(InvoiceItem::class, 'invoice_id');
     }
 }

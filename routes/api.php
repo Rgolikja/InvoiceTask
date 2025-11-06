@@ -40,7 +40,7 @@ Route::put('/imports/{id}', [ImportController::class, 'update']);
 //route to delete an import
 Route::delete('/imports/{id}', [ImportController::class, 'destroy']);
 
-Route::get('/fiscalize/{invoice}', [ElifController::class, 'fiscalize']);//route to fiscalize
+Route::post('/fiscalize/{invoice}', [ElifController::class, 'fiscalize']);//route to fiscalize
 
 
 // });

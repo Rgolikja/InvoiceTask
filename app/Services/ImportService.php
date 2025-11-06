@@ -127,6 +127,33 @@ class ImportService implements ImportServiceInterface
                         ]);
                         $summary['invoices_created']++;
                         $debug[] = "Created new invoice {$invoiceNumber}.";
+                        //after invoices are created we try to fiscalize them
+                        try {
+                            $elifService = new \App\Services\ElifApiService();
+                            $token = $elifService->login();
+
+                            if (!isset($token['error'])) {
+                                $fiscalResponse = $elifService->fiscalize($currentInvoice, $token);
+
+                                if (isset($fiscalResponse['qrcode_url'])) {
+                                    $currentInvoice->update([
+                                        'fiscal_qr_url' => $fiscalResponse['qrcode_url'],
+                                        'fiscalized_at' => now(),
+                                        'fiscalization_response' => json_encode($fiscalResponse),
+                                    ]);
+                                    $debug[] = "Fiscalized Invoice {$invoiceNumber}. QR: {$fiscalResponse['qrcode_url']}";
+
+                                } else {
+                                    $debug[] = "Fiscalization Failed";
+                                }
+                            } else {
+                                $debug[] = "Fiscalization login failed";
+                            }
+                        } catch (Exception $e) {
+                            $debug[] = "Fiscalization exception for {$invoiceNumber}" . $e->getMessage();
+                            Log::error("Fiscalization Error for {$invoiceNumber}" . $e->getMessage());
+                        }
+
                     }
 
                     $mode = 'reading_items';
