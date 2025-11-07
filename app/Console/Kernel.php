@@ -45,7 +45,11 @@ class Kernel extends ConsoleKernel
             }
         })
 
-        //do behet cdo 5 minuta
+            //do behet cdo 5 minuta
             ->everyFiveMinutes();
+    }
+    protected function schedule(\Illuminate\Console\Scheduling\Schedule $schedule)
+    {
+        $schedule->command('elif:declare-cashdesk')->dailyAt('08:00');
     }
 }
