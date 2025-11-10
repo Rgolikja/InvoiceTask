@@ -64,55 +64,51 @@ class ElifApiService
                     "token" => $token,
                 ],
             ], JSON_UNESCAPED_SLASHES);
-            //ndertojme details qe do permbaj te dhenat e fatures
+            $exchangeRate = 96.65;
 
-            $details = $invoice->items->map(function ($item) use ($invoice) {
+            //ndertojme details qe do permbaj te dhenat e fatures
+            $details = $invoice->items->map(function ($item) use ($invoice, $exchangeRate) {
                 return [
                     "sales_invoice_header_id" => null,
                     "sales_invoice_detail_id" => null,
                     "item_code" => $invoice->invoice_number,
                     "item_name" => $item->product_name,
                     "item_barcode" => null,
-                    "item_total_with_tax_reporting_currency" => number_format(round($item->total_price * 104.13, 2), 2, '.', ''),
+                    "item_total_with_tax_reporting_currency" => number_format(round($item->total_price * $exchangeRate, 2), 2, '.', ''),
                     "item_type_id" => 1,
                     "item_price_without_tax" => number_format($item->unit_price, 2, '.', ''),
                     "item_price_with_tax" => number_format($item->unit_price, 2, '.', ''),
                     "item_sales_tax_percentage" => 0,
-                    "item_total_without_tax" => number_format($item->total_price, 2, '.', ''),
+                    "item_total_without_tax" => number_format(round($item->total_price, 2), 2, '.', ''),
                     "item_quantity" => $item->quantity,
                     "item_total_with_tax" => number_format(round($item->total_price, 2), 2, '.', ''),
                     "item_total_tax" => number_format($item->vat_amount ?? 0, 2, '.', ''),
                     "item_unit_id" => 1,
-                    "tax_rate_id" => 2,
+                    "tax_rate_id" => 1,
                     "item_id" => $item->elif_item_id,
                     "is_with_tax" => 0,
                     "cmd" => "insert"
                 ];
             })->toArray();
 
+            $totalItems = round($invoice->items->sum('total_price'), 2);
+            $paidAmount = number_format($totalItems, 2, '.', '');
 
-
-            $totalItems = $invoice->items->sum(function ($item) {
-                return round($item->total_price, 2);
-            });
-            $paidAmount = round($totalItems, 2);
-            $totalWithTax = round($invoice->items->sum('total_price'), 2);
             //  ndertojm te gjithe trupin e fatures
-
             $salesInvoice = [
                 "body" => [
                     [
                         "cmd" => "insert",
                         "sales_date" => now()->format('Y-m-d H:i:s'),
                         "customer_name" => $invoice->client->name ?? 'Unknown',
-                        "exchange_rate" => 104.13,
+                        "exchange_rate" => $exchangeRate,
                         "city_id" => 1,
                         "automatic_payment_method_id" => 0,
                         "currency_id" => 2,
                         "warehouse_id" => 1,
                         "customer_id" => $invoice->client->id ?? 1,
                         "sales_document_serial" => "",
-                        "paid_amount" => number_format(round($invoice->total_amount_eur, 2), 2, '.', ''),
+                        "paid_amount" => $paidAmount,
                         "customer_tax_id" => "SKA",
                         "cash_register_id" => 10,
                         "fiscal_delay_reason_type" => null,
@@ -127,15 +123,14 @@ class ElifApiService
                 "Language" => "sq-AL"
             ];
 
+
             Log::info('Fiscalization validation check:', [
                 'invoice_id' => $invoice->id,
-                'paid_amount' => number_format($paidAmount, 2, '.', ''),
-                'sum_of_items_total_price' => number_format($totalItems, 2, '.', ''),
-                "item_total_with_tax" => number_format($totalWithTax, 2, '.', '')
+                'paid_amount' => $paidAmount,
+                'sum_of_items_total_price' => number_format($totalItems, 2, '.', '')
             ]);
-            Log::info('SALES INVOICE JSON PAYLOAD', [
-                'json' => json_encode($salesInvoice, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
-            ]);
+
+            Log::info('Fiscalization request payload (JSON): ' . json_encode($salesInvoice, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
 
             // dergojm requestin tek sales.php
             $response = $this->client->post('sales.php', ['json' => $salesInvoice]);
@@ -174,6 +169,8 @@ class ElifApiService
             ];
         }
     }
+
+
     public function declareCashDesk($token)
     {
         try {

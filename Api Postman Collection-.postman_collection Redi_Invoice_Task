@@ -1,0 +1,685 @@
+{
+	"info": {
+		"_postman_id": "d8bf6062-83ea-480f-986e-70f3f198aa51",
+		"name": "Api Postman Collection:",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47249843"
+	},
+	"item": [
+		{
+			"name": "/login.php",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"username\": \"fiscaluser\",\r\n        \"password\": \"Fiscal1!\"\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/live/api/login.php",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"live",
+						"api",
+						"login.php"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "/login.php",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n        \"username\": \"fiscaluser\",\r\n        \"password\": \"Fiscal1!\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://elif12.2rmlab.com/live/api/login.php",
+							"protocol": "https",
+							"host": [
+								"elif12",
+								"2rmlab",
+								"com"
+							],
+							"path": [
+								"live",
+								"api",
+								"login.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 10 Nov 2025 07:47:04 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.62 (Ubuntu)"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "sentry-trace"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=UTF-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"length\": null,\n    \"body\": [\n        {\n            \"user_id\": 8001950,\n            \"username\": \"fiscaluser\",\n            \"row_insert_date_time\": \"2024-11-20 13:00:54\",\n            \"row_last_update_date_time\": \"2025-11-07 11:04:25\",\n            \"is_active\": 1,\n            \"is_locked\": 0,\n            \"is_deleted\": 0,\n            \"insert_user_id\": 8000160,\n            \"last_update_user_id\": 8000160,\n            \"is_login_allowed\": 1,\n            \"is_sales_agent\": 1,\n            \"address\": null,\n            \"email\": \"elifsupport@xhaferaj.com\",\n            \"mobile\": null,\n            \"name\": \"fiscaluser\",\n            \"surname\": null,\n            \"expire_date\": null,\n            \"allow_mobile_configuration\": 0,\n            \"client_company_id\": 17000144,\n            \"last_accessed_database_name\": \"Elif_001_1202260_07-2024\",\n            \"send_email_on_error\": 1,\n            \"task_default_database\": null,\n            \"person_id\": null,\n            \"consecutive_login_failure\": 20,\n            \"block_expires_on_date_time\": \"2025-06-03 14:28:50\",\n            \"is_blocked\": 0,\n            \"use_two_factor_auth\": 0,\n            \"password_expires_on_date_time\": \"2025-10-07 15:19:33\",\n            \"email_validation_code\": null,\n            \"was_email_validation_passed\": null,\n            \"use_pos\": 1,\n            \"is_sales_invoice_price_edit_allowed\": 1,\n            \"is_sales_invoice_discount_edit_allowed\": 1,\n            \"barcode\": null,\n            \"person\": [],\n            \"token\": \"e2cfe362b8052e24784b6548045f06d993e46f4d75342e54a1d4bd8aca4b58f988bfb9d89a2917ea0f761dd0d4e38eb01ee07f105056e3d04b07d04f4f5732cf\",\n            \"is_quotation_print_allowed\": 1,\n            \"view_only_own_documents\": 0,\n            \"is_automatic\": null,\n            \"database_list\": [\n                {\n                    \"company_id\": 1202260,\n                    \"database_name\": \"Elif_001_1202260_07-2024\",\n                    \"row_insert_date_time\": \"2024-07-25 15:54:04\",\n                    \"row_last_update_date_time\": \"2025-11-07 11:04:25\",\n                    \"is_active\": 1,\n                    \"is_locked\": 0,\n                    \"is_deleted\": 0,\n                    \"client_company_id\": 17000144,\n                    \"insert_user_id\": 8000160,\n                    \"last_update_user_id\": 8000160,\n                    \"company_code\": \"001\",\n                    \"company_name\": \"Backend - Testime212\",\n                    \"name\": \"Backend - Testime\",\n                    \"tax_id\": \"L81310069K\",\n                    \"address\": \"Tirane\",\n                    \"tel\": \"067777777\",\n                    \"mobile\": \"..\",\n                    \"web\": null,\n                    \"email\": \"elifsupport@xhaferaj.com\",\n                    \"city_id\": 1,\n                    \"serial_number_authorization\": null,\n                    \"reporting_currency_id\": 1,\n                    \"reporting_currency2_id\": 1,\n                    \"allow_duplicate_tax_id\": null,\n                    \"invoice_footer_note\": null,\n                    \"invoice_footer_2rmlab\": \"Ndertuar me pasion nga 2RM Lab shpk 044526000\",\n                    \"invoice_footer_bank_account\": null,\n                    \"invoice_footer_tax_authorization\": null,\n                    \"invoice_footer_ad\": null,\n                    \"tax_id_format\": null,\n                    \"quote_footer_note\": null,\n                    \"tax_username\": null,\n                    \"tax_password\": null,\n                    \"activity_start_date\": null,\n                    \"sales_invoice_allow_item_dublicate\": 1,\n                    \"workingday\": \"1111100\",\n                    \"hr_insurance_category_id\": 59,\n                    \"proposal_footer_note\": null,\n                    \"sales_order_footer_note\": null,\n                    \"linked_in_address\": null,\n                    \"twitter_address\": null,\n                    \"facebook_address\": null,\n                    \"instagram_address\": null,\n                    \"busin_unit_code\": null,\n                    \"issuer_nuis\": \"L81310069K\",\n                    \"maintainer_code\": null,\n                    \"soft_code\": null,\n                    \"operator_code\": null,\n                    \"use_fiscalization\": 1,\n                    \"certificate_serial_number\": null,\n                    \"fiscalization_tcr_code_counter\": 1309,\n                    \"fiscal_customization_id\": \"urn:cen.eu:en16931:2017\",\n                    \"deploy_mode\": 0,\n                    \"has_vat\": 1,\n                    \"company_certificate_id\": 102051,\n                    \"insert_app_origin_id\": 0,\n                    \"last_update_app_origin_id\": 2,\n                    \"licence_number\": null,\n                    \"is_pharma_depot\": 0,\n                    \"org_number\": null,\n                    \"ealbania_username\": null,\n                    \"ealbania_password\": null,\n                    \"is_blocked\": 0,\n                    \"blocked_last_checked\": \"2025-11-10 08:16:55\",\n                    \"initial_company_id\": null,\n                    \"previous_company_id\": null,\n                    \"min_allowed_date\": null,\n                    \"max_allowed_date\": null,\n                    \"hard_log\": 0,\n                    \"block_print\": 0,\n                    \"profile\": null,\n                    \"business_activity\": null,\n                    \"decimal_separator\": \".\",\n                    \"thousands_separator\": \",\",\n                    \"invoice_label\": null,\n                    \"fiscal_country_id\": 5,\n                    \"vat_number\": null,\n                    \"date_style\": \"dd/mm/yyyy\",\n                    \"license_key_expire_date\": null,\n                    \"notification_before_license_expire_in_date\": 10,\n                    \"vat_activation_date\": null,\n                    \"ealbania_token\": null,\n                    \"einvoice_token\": null,\n                    \"status_label\": null,\n                    \"current_size_bytes\": 61723107,\n                    \"current_size_updated_at\": \"2025-11-10 01:00:01.991422+01\",\n                    \"current_size_pretty\": \"59 MB\",\n                    \"logos\": [],\n                    \"stamps\": [],\n                    \"userdefaults\": []\n                }\n            ],\n            \"is_webcustomer\": false,\n            \"is_panel_admin\": false,\n            \"update_url\": null\n        }\n    ],\n    \"status\": {\n        \"code\": 600,\n        \"message\": \"Success!\",\n        \"license_message\": null,\n        \"license_key_expire_date\": null,\n        \"notification_before_license_expire\": 10,\n        \"day_before_expire_date\": 0,\n        \"is_license_expired\": false,\n        \"is_fiscal_service_active\": 1\n    },\n    \"response_sent_time\": \"2025-11-10 08:47:04\"\n}"
+				}
+			]
+		},
+		{
+			"name": "https://elif12.2rmlab.com/live/api/cashdeskactualbalance.php",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"body\": [\r\n        {\r\n            \"cmd\": \"insert\",\r\n            \"cash_desk_actual_balance_header_id\": null,\r\n            \"counting_date_time\": \"2025-11-10 08:19\",\r\n            \"note\": null,\r\n            \"balance_type\": 2,\r\n            \"fcbc_code\": \"16b424af-229c-409b-a0c9-8ddb5150ebd8\",\r\n            \"fiscal_delay_reason_type\": null,\r\n            \"UUID\": \"70a7bbde-8e5f-4e99-b62c-d1ffc02a8d6c\",\r\n            \"details\": [\r\n                {\r\n                    \"cash_desk_actual_balance_detail_id\": null,\r\n                    \"cash_desk_actual_balance_header_id\": null,\r\n                    \"cash_desk_id\": 10,\r\n                    \"currency_id\": 2,\r\n                    \"amount\": \"0\",\r\n                    \"note\": null,\r\n                    \"exchange_rate\": 1,\r\n                    \"reporting_currency_total\": 0,\r\n                    \"current_amount\": \"0\",\r\n                    \"cash_transaction_header_id\": null\r\n                }\r\n            ]\r\n        }\r\n    ],\r\n    \"IsEncrypted\": false,\r\n    \"ServerConfig\": \"{\\\"Url_API\\\":\\\"https://elif12.2rmlab.com/live/api\\\",\\\"DB_Config\\\":\\\"elif_config\\\",\\\"Company_DB_Name\\\":\\\"Elif_001_1202260_07-2024\\\",\\\"HardwareId\\\":\\\"2e5e453480aefa545f934e3351e45aec\\\",\\\"UserInfo\\\":{\\\"user_id\\\":8001950,\\\"username\\\":\\\"fiscaluser\\\",\\\"password\\\":null,\\\"token\\\":\\\"33c2efc5f6cde24a0da4eb6210c0042d80cb49994777c9321b9aa4a18cada5f56d1f261f6690fbeac31c4870dc3b8328ad65b68f06a8d2b811e0133f6ea71f60\\\"}}\",\r\n    \"App\": \"web\",\r\n    \"Language\": \"sq-AL\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/live/api/cashdeskactualbalance.php",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"live",
+						"api",
+						"cashdeskactualbalance.php"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "https://elif12.2rmlab.com/live/api/cashdeskactualbalance.php",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"body\": [\r\n        {\r\n            \"cmd\": \"insert\",\r\n            \"cash_desk_actual_balance_header_id\": null,\r\n            \"counting_date_time\": \"2025-11-10 08:19\",\r\n            \"note\": null,\r\n            \"balance_type\": 2,\r\n            \"fcbc_code\": \"16b424af-229c-409b-a0c9-8ddb5150ebd8\",\r\n            \"fiscal_delay_reason_type\": null,\r\n            \"UUID\": \"70a7bbde-8e5f-4e99-b62c-d1ffc02a8d6c\",\r\n            \"details\": [\r\n                {\r\n                    \"cash_desk_actual_balance_detail_id\": null,\r\n                    \"cash_desk_actual_balance_header_id\": null,\r\n                    \"cash_desk_id\": 10,\r\n                    \"currency_id\": 2,\r\n                    \"amount\": \"0\",\r\n                    \"note\": null,\r\n                    \"exchange_rate\": 1,\r\n                    \"reporting_currency_total\": 0,\r\n                    \"current_amount\": \"0\",\r\n                    \"cash_transaction_header_id\": null\r\n                }\r\n            ]\r\n        }\r\n    ],\r\n    \"IsEncrypted\": false,\r\n    \"ServerConfig\": \"{\\\"Url_API\\\":\\\"https://elif12.2rmlab.com/live/api\\\",\\\"DB_Config\\\":\\\"elif_config\\\",\\\"Company_DB_Name\\\":\\\"Elif_001_1202260_07-2024\\\",\\\"HardwareId\\\":\\\"2e5e453480aefa545f934e3351e45aec\\\",\\\"UserInfo\\\":{\\\"user_id\\\":8001950,\\\"username\\\":\\\"fiscaluser\\\",\\\"password\\\":null,\\\"token\\\":\\\"33c2efc5f6cde24a0da4eb6210c0042d80cb49994777c9321b9aa4a18cada5f56d1f261f6690fbeac31c4870dc3b8328ad65b68f06a8d2b811e0133f6ea71f60\\\"}}\",\r\n    \"App\": \"web\",\r\n    \"Language\": \"sq-AL\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseURL}}/live/api/cashdeskactualbalance.php",
+							"host": [
+								"{{baseURL}}"
+							],
+							"path": [
+								"live",
+								"api",
+								"cashdeskactualbalance.php"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Mon, 10 Nov 2025 07:20:34 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "Apache/2.4.62 (Ubuntu)"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Access-Control-Allow-Headers",
+							"value": "sentry-trace"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5, max=100"
+						},
+						{
+							"key": "Connection",
+							"value": "Keep-Alive"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=UTF-8"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"length\": null,\n    \"body\": [\n        {\n            \"cash_desk_actual_balance_header_id\": 278,\n            \"counting_date_time\": \"2025-11-10 08:19:00\",\n            \"note\": null,\n            \"is_active\": 1,\n            \"is_locked\": 0,\n            \"is_deleted\": 0,\n            \"insert_user_id\": 8001950,\n            \"last_update_user_id\": 8001950,\n            \"row_insert_date_time\": \"2025-11-10 08:20:35\",\n            \"row_last_update_date_time\": \"2025-11-10 08:20:35\",\n            \"counter\": 0,\n            \"balance_type\": 2,\n            \"insert_app_origin_id\": 2,\n            \"last_update_app_origin_id\": null,\n            \"fcbc_code\": \"3b6af8d0-74e1-4f7e-abef-5f97968bab4e\",\n            \"fiscal_delay_reason_type\": null,\n            \"UUID\": \"f496a7ad-e27c-4d4e-aa33-ad78f2afce4d\",\n            \"details\": [\n                {\n                    \"cash_desk_actual_balance_detail_id\": 278,\n                    \"cash_desk_actual_balance_header_id\": 278,\n                    \"cash_desk_id\": 10,\n                    \"currency_id\": 2,\n                    \"amount\": \"0\",\n                    \"note\": null,\n                    \"is_active\": 1,\n                    \"is_locked\": 0,\n                    \"is_deleted\": 0,\n                    \"insert_user_id\": 8001950,\n                    \"last_update_user_id\": 8001950,\n                    \"row_insert_date_time\": \"2025-11-10 08:20:35\",\n                    \"row_last_update_date_time\": \"2025-11-10 08:20:35\",\n                    \"counter\": 0,\n                    \"insert_app_origin_id\": 2,\n                    \"last_update_app_origin_id\": null,\n                    \"exchange_rate\": \"1\",\n                    \"reporting_currency_total\": \"0\",\n                    \"current_amount\": \"0\",\n                    \"cash_transaction_header_id\": null\n                }\n            ],\n            \"cash_transaction\": [],\n            \"reporting_currency_total\": null\n        }\n    ],\n    \"status\": {\n        \"code\": 600,\n        \"message\": \"Success!\",\n        \"license_message\": null,\n        \"license_key_expire_date\": null,\n        \"notification_before_license_expire\": 10,\n        \"day_before_expire_date\": 0,\n        \"is_license_expired\": false,\n        \"is_fiscal_service_active\": 1\n    },\n    \"response_sent_time\": \"2025-11-10 08:20:35\"\n}"
+				}
+			]
+		},
+		{
+			"name": "http://127.0.0.1:8000/api/imports",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/imports",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"imports"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "http://127.0.0.1:8000/api/imports",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/imports",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"imports"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Host",
+							"value": "127.0.0.1:8000"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.2.12"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Nov 2025 07:49:04 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"current_page\": 1,\n    \"data\": [\n        {\n            \"id\": 2,\n            \"file_name\": \"RaportShitjeArtikulli  (2).xls\",\n            \"file_path\": \"imports/uD75CMOwkpfomcW8ZDqNXCwocLodxt8EOpSB1PKT.xls\",\n            \"status\": \"completed\",\n            \"rows_total\": 85,\n            \"rows_imported\": 0,\n            \"error_message\": null,\n            \"created_at\": \"2025-11-05T09:06:59.000000Z\",\n            \"updated_at\": \"2025-11-05T09:06:59.000000Z\"\n        },\n        {\n            \"id\": 1,\n            \"file_name\": \"RaportShitjeArtikulli  (2).xls\",\n            \"file_path\": \"imports/AvdZjNJGT0zXYwGF6cLACCOT0iZNb0slxw9GGkHo.xls\",\n            \"status\": \"completed\",\n            \"rows_total\": 85,\n            \"rows_imported\": 0,\n            \"error_message\": null,\n            \"created_at\": \"2025-11-05T09:04:20.000000Z\",\n            \"updated_at\": \"2025-11-05T09:04:20.000000Z\"\n        }\n    ],\n    \"first_page_url\": \"http://127.0.0.1:8000/api/imports?page=1\",\n    \"from\": 1,\n    \"last_page\": 1,\n    \"last_page_url\": \"http://127.0.0.1:8000/api/imports?page=1\",\n    \"links\": [\n        {\n            \"url\": null,\n            \"label\": \"&laquo; Previous\",\n            \"page\": null,\n            \"active\": false\n        },\n        {\n            \"url\": \"http://127.0.0.1:8000/api/imports?page=1\",\n            \"label\": \"1\",\n            \"page\": 1,\n            \"active\": true\n        },\n        {\n            \"url\": null,\n            \"label\": \"Next &raquo;\",\n            \"page\": null,\n            \"active\": false\n        }\n    ],\n    \"next_page_url\": null,\n    \"path\": \"http://127.0.0.1:8000/api/imports\",\n    \"per_page\": 10,\n    \"prev_page_url\": null,\n    \"to\": 2,\n    \"total\": 2\n}"
+				}
+			]
+		},
+		{
+			"name": "http://127.0.0.1:8000/api/fiscalize/1",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/admin/invoiceTaskRedi/storage/app/public/imports/RaportShitjeArtikulli  (2).xls"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/fiscalize/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"fiscalize",
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "http://127.0.0.1:8000/api/fiscalize/1",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/fiscalize/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"fiscalize",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Host",
+							"value": "127.0.0.1:8000"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.2.12"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Nov 2025 07:52:55 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Fiscalization failed\",\n    \"response\": {\n        \"length\": null,\n        \"body\": [],\n        \"status\": {\n            \"code\": 99999,\n            \"message\": \"Per faturat me para ne dore pagesa nuk duhet te jete e ndryshme nga totali i fatures (2)!\",\n            \"license_message\": null,\n            \"license_key_expire_date\": null,\n            \"notification_before_license_expire\": 10,\n            \"day_before_expire_date\": 0,\n            \"is_license_expired\": false,\n            \"is_fiscal_service_active\": 1\n        },\n        \"response_sent_time\": \"2025-11-10 08:52:55\"\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "http://127.0.0.1:8000/api/imports",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/C:/Users/admin/invoiceTaskRedi/storage/app/public/imports/RaportShitjeArtikulli  (2).xls"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/imports",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"imports"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "http://127.0.0.1:8000/api/imports",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/admin/invoiceTaskRedi/storage/app/public/imports/RaportShitjeArtikulli  (2).xls"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/imports",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"imports"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Host",
+							"value": "127.0.0.1:8000"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.2.12"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Nov 2025 07:53:52 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"File imported successfully\",\n    \"debug\": [\n        \"Row[9]: Detected header (A='Nr:', B='FSH27443') → invoiceNumber='FSH27443'\",\n        \"Found existing client: K018\",\n        \"Reusing existing invoice FSH27443.\",\n        \"🧩 Added 'Kase Telefoni' (Unit=, Qty=17.12, Price=5, EUR=85.58, ALL=85.58, Desc='Kase 3 cope').\",\n        \"💶 Updated totals for invoice FSH27443: EUR=85.588, ALL=0\",\n        \"Row[16]: Detected header (A='Nr:', B='FSH27514') → invoiceNumber='FSH27514'\",\n        \"Found existing client: K018\",\n        \"Reusing existing invoice FSH27514.\",\n        \"🧩 Added 'Leter 80' (Unit=, Qty=12.94, Price=5, EUR=64.7, ALL=64.7, Desc='2 cope').\",\n        \"💶 Updated totals for invoice FSH27514: EUR=64.706, ALL=0\",\n        \"Row[23]: Detected header (A='Nr:', B='FSH30399') → invoiceNumber='FSH30399'\",\n        \"Found existing client: K018\",\n        \"Reusing existing invoice FSH30399.\",\n        \"🧩 Added 'Bllok' (Unit=, Qty=1, Price=30, EUR=30, ALL=30, Desc='1 cope').\",\n        \"💶 Updated totals for invoice FSH30399: EUR=30.003, ALL=0\",\n        \"Row[30]: Detected header (A='Nr:', B='FSH30792') → invoiceNumber='FSH30792'\",\n        \"Found existing client: K018\",\n        \"Reusing existing invoice FSH30792.\",\n        \"🧩 Added 'Boje akrilike' (Unit=, Qty=1, Price=150, EUR=150, ALL=150, Desc='1 cope').\",\n        \"💶 Updated totals for invoice FSH30792: EUR=150.0015, ALL=0\",\n        \"Row[37]: Detected header (A='Nr:', B='FSH30793') → invoiceNumber='FSH30793'\",\n        \"Found existing client: K018\",\n        \"Reusing existing invoice FSH30793.\",\n        \"🧩 Added 'Uje Lajthiza' (Unit=, Qty=5, Price=5, EUR=25, ALL=25, Desc='1 cope').\",\n        \"💶 Updated totals for invoice FSH30793: EUR=25.002, ALL=0\",\n        \"Row[44]: Detected header (A='Nr:', B='FSH30816') → invoiceNumber='FSH30816'\",\n        \"Found existing client: K018\",\n        \"Reusing existing invoice FSH30816.\",\n        \"🧩 Added 'Uje Tepelena' (Unit=, Qty=33, Price=5, EUR=165, ALL=165, Desc='1 cope').\",\n        \"💶 Updated totals for invoice FSH30816: EUR=165.0016, ALL=0\",\n        \"Row[51]: Detected header (A='Nr:', B='FSH30843') → invoiceNumber='FSH30843'\",\n        \"Found existing client: K018\",\n        \"Reusing existing invoice FSH30843.\",\n        \"🧩 Added 'Gome' (Unit=, Qty=60.36, Price=9, EUR=543.24, ALL=543.24, Desc='1 cope').\",\n        \"💶 Updated totals for invoice FSH30843: EUR=543.2454, ALL=0\",\n        \"Row[58]: Detected header (A='Nr:', B='FSH30939') → invoiceNumber='FSH30939'\",\n        \"Found existing client: K018\",\n        \"Reusing existing invoice FSH30939.\",\n        \"🧩 Added 'Printer' (Unit=, Qty=109.5, Price=5, EUR=547.5, ALL=547.5, Desc='10 cope').\",\n        \"💶 Updated totals for invoice FSH30939: EUR=547.5054, ALL=0\",\n        \"Row[65]: Detected header (A='Nr:', B='FSH31005') → invoiceNumber='FSH31005'\",\n        \"Found existing client: K018\",\n        \"Reusing existing invoice FSH31005.\",\n        \"🧩 Added 'Cante shkolla' (Unit=, Qty=54.75, Price=5, EUR=273.75, ALL=273.75, Desc='2 cope').\",\n        \"💶 Updated totals for invoice FSH31005: EUR=273.7527, ALL=0\",\n        \"Row[72]: Detected header (A='Nr:', B='FSH31211') → invoiceNumber='FSH31211'\",\n        \"Found existing client: K018\",\n        \"Reusing existing invoice FSH31211.\",\n        \"💶 Updated totals for invoice FSH31211: EUR=120.0012, ALL=0\"\n    ],\n    \"summary\": {\n        \"invoices_created\": 0,\n        \"clients_linked\": 0,\n        \"items_created\": 9\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "http://127.0.0.1:8000/api/invoices",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/invoices",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"invoices"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "http://127.0.0.1:8000/api/invoices",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/invoices",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"invoices"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Host",
+							"value": "127.0.0.1:8000"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.2.12"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Nov 2025 08:04:34 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 1,\n        \"client_id\": 1,\n        \"invoice_number\": \"FSH27443\",\n        \"invoice_date\": \"2025-11-06\",\n        \"total_amount_eur\": \"85.59\",\n        \"total_with_vat\": \"85.59\",\n        \"total_amount_all\": \"0.00\",\n        \"currency\": \"EUR\",\n        \"base_currency\": \"ALL\",\n        \"created_at\": \"2025-11-06T08:49:58.000000Z\",\n        \"updated_at\": \"2025-11-10T07:53:52.000000Z\",\n        \"fisqal_qr_url\": null,\n        \"fiscalized_at\": null,\n        \"fiscalization_response\": null,\n        \"client\": {\n            \"id\": 1,\n            \"code\": \"K018\",\n            \"name\": \"Indrit Domi\",\n            \"created_at\": \"2025-11-06T08:49:58.000000Z\",\n            \"updated_at\": \"2025-11-06T08:49:58.000000Z\"\n        },\n        \"items\": [\n            {\n                \"id\": 1,\n                \"invoice_id\": 1,\n                \"product_name\": \"Kase Telefoni\",\n                \"unit\": \"\",\n                \"quantity\": \"17.1200\",\n                \"unit_price\": \"5.0000\",\n                \"total_price\": \"85.58\",\n                \"vat_amount\": \"0.0000\",\n                \"description\": \"Kase 3 cope\",\n                \"created_at\": \"2025-11-06T08:50:00.000000Z\",\n                \"updated_at\": \"2025-11-06T08:50:00.000000Z\",\n                \"elif_item_id\": 565\n            },\n            {\n                \"id\": 10,\n                \"invoice_id\": 1,\n                \"product_name\": \"Kase Telefoni\",\n                \"unit\": \"\",\n                \"quantity\": \"17.1200\",\n                \"unit_price\": \"5.0000\",\n                \"total_price\": \"85.58\",\n                \"vat_amount\": \"0.0000\",\n                \"description\": \"Kase 3 cope\",\n                \"created_at\": \"2025-11-10T07:53:52.000000Z\",\n                \"updated_at\": \"2025-11-10T07:53:52.000000Z\",\n                \"elif_item_id\": null\n            }\n        ]\n    },\n    {\n        \"id\": 2,\n        \"client_id\": 1,\n        \"invoice_number\": \"FSH27514\",\n        \"invoice_date\": \"2025-11-06\",\n        \"total_amount_eur\": \"64.71\",\n        \"total_with_vat\": \"64.71\",\n        \"total_amount_all\": \"0.00\",\n        \"currency\": \"EUR\",\n        \"base_currency\": \"ALL\",\n        \"created_at\": \"2025-11-06T08:50:00.000000Z\",\n        \"updated_at\": \"2025-11-10T07:53:52.000000Z\",\n        \"fisqal_qr_url\": null,\n        \"fiscalized_at\": null,\n        \"fiscalization_response\": null,\n        \"client\": {\n            \"id\": 1,\n            \"code\": \"K018\",\n            \"name\": \"Indrit Domi\",\n            \"created_at\": \"2025-11-06T08:49:58.000000Z\",\n            \"updated_at\": \"2025-11-06T08:49:58.000000Z\"\n        },\n        \"items\": [\n            {\n                \"id\": 2,\n                \"invoice_id\": 2,\n                \"product_name\": \"Leter 80\",\n                \"unit\": \"\",\n                \"quantity\": \"12.9400\",\n                \"unit_price\": \"5.0000\",\n                \"total_price\": \"64.70\",\n                \"vat_amount\": \"0.0000\",\n                \"description\": \"2 cope\",\n                \"created_at\": \"2025-11-06T08:50:01.000000Z\",\n                \"updated_at\": \"2025-11-06T08:50:01.000000Z\",\n                \"elif_item_id\": 566\n            },\n            {\n                \"id\": 11,\n                \"invoice_id\": 2,\n                \"product_name\": \"Leter 80\",\n                \"unit\": \"\",\n                \"quantity\": \"12.9400\",\n                \"unit_price\": \"5.0000\",\n                \"total_price\": \"64.70\",\n                \"vat_amount\": \"0.0000\",\n                \"description\": \"2 cope\",\n                \"created_at\": \"2025-11-10T07:53:52.000000Z\",\n                \"updated_at\": \"2025-11-10T07:53:52.000000Z\",\n                \"elif_item_id\": null\n            }\n        ]\n    },\n    {\n        \"id\": 3,\n        \"client_id\": 1,\n        \"invoice_number\": \"FSH30399\",\n        \"invoice_date\": \"2025-11-06\",\n        \"total_amount_eur\": \"30.00\",\n        \"total_with_vat\": \"30.00\",\n        \"total_amount_all\": \"0.00\",\n        \"currency\": \"EUR\",\n        \"base_currency\": \"ALL\",\n        \"created_at\": \"2025-11-06T08:50:01.000000Z\",\n        \"updated_at\": \"2025-11-10T07:53:52.000000Z\",\n        \"fisqal_qr_url\": null,\n        \"fiscalized_at\": null,\n        \"fiscalization_response\": null,\n        \"client\": {\n            \"id\": 1,\n            \"code\": \"K018\",\n            \"name\": \"Indrit Domi\",\n            \"created_at\": \"2025-11-06T08:49:58.000000Z\",\n            \"updated_at\": \"2025-11-06T08:49:58.000000Z\"\n        },\n        \"items\": [\n            {\n                \"id\": 3,\n                \"invoice_id\": 3,\n                \"product_name\": \"Bllok\",\n                \"unit\": \"\",\n                \"quantity\": \"1.0000\",\n                \"unit_price\": \"30.0000\",\n                \"total_price\": \"30.00\",\n                \"vat_amount\": \"0.0000\",\n                \"description\": \"1 cope\",\n                \"created_at\": \"2025-11-06T08:50:03.000000Z\",\n                \"updated_at\": \"2025-11-06T08:50:03.000000Z\",\n                \"elif_item_id\": 567\n            },\n            {\n                \"id\": 12,\n                \"invoice_id\": 3,\n                \"product_name\": \"Bllok\",\n                \"unit\": \"\",\n                \"quantity\": \"1.0000\",\n                \"unit_price\": \"30.0000\",\n                \"total_price\": \"30.00\",\n                \"vat_amount\": \"0.0000\",\n                \"description\": \"1 cope\",\n                \"created_at\": \"2025-11-10T07:53:52.000000Z\",\n                \"updated_at\": \"2025-11-10T07:53:52.000000Z\",\n                \"elif_item_id\": null\n            }\n        ]\n    },\n    {\n        \"id\": 4,\n        \"client_id\": 1,\n        \"invoice_number\": \"FSH30792\",\n        \"invoice_date\": \"2025-11-06\",\n        \"total_amount_eur\": \"150.00\",\n        \"total_with_vat\": \"150.00\",\n        \"total_amount_all\": \"0.00\",\n        \"currency\": \"EUR\",\n        \"base_currency\": \"ALL\",\n        \"created_at\": \"2025-11-06T08:50:03.000000Z\",\n        \"updated_at\": \"2025-11-10T07:53:52.000000Z\",\n        \"fisqal_qr_url\": null,\n        \"fiscalized_at\": null,\n        \"fiscalization_response\": null,\n        \"client\": {\n            \"id\": 1,\n            \"code\": \"K018\",\n            \"name\": \"Indrit Domi\",\n            \"created_at\": \"2025-11-06T08:49:58.000000Z\",\n            \"updated_at\": \"2025-11-06T08:49:58.000000Z\"\n        },\n        \"items\": [\n            {\n                \"id\": 4,\n                \"invoice_id\": 4,\n                \"product_name\": \"Boje akrilike\",\n                \"unit\": \"\",\n                \"quantity\": \"1.0000\",\n                \"unit_price\": \"150.0000\",\n                \"total_price\": \"150.00\",\n                \"vat_amount\": \"0.0000\",\n                \"description\": \"1 cope\",\n                \"created_at\": \"2025-11-06T08:50:04.000000Z\",\n                \"updated_at\": \"2025-11-06T08:50:04.000000Z\",\n                \"elif_item_id\": 568\n            },\n            {\n                \"id\": 13,\n                \"invoice_id\": 4,\n                \"product_name\": \"Boje akrilike\",\n                \"unit\": \"\",\n                \"quantity\": \"1.0000\",\n                \"unit_price\": \"150.0000\",\n                \"total_price\": \"150.00\",\n                \"vat_amount\": \"0.0000\",\n                \"description\": \"1 cope\",\n                \"created_at\": \"2025-11-10T07:53:52.000000Z\",\n                \"updated_at\": \"2025-11-10T07:53:52.000000Z\",\n                \"elif_item_id\": null\n            }\n        ]\n    },\n    {\n        \"id\": 5,\n        \"client_id\": 1,\n        \"invoice_number\": \"FSH30793\",\n        \"invoice_date\": \"2025-11-06\",\n        \"total_amount_eur\": \"25.00\",\n        \"total_with_vat\": \"25.00\",\n        \"total_amount_all\": \"0.00\",\n        \"currency\": \"EUR\",\n        \"base_currency\": \"ALL\",\n        \"created_at\": \"2025-11-06T08:50:04.000000Z\",\n        \"updated_at\": \"2025-11-10T07:53:52.000000Z\",\n        \"fisqal_qr_url\": null,\n        \"fiscalized_at\": null,\n        \"fiscalization_response\": null,\n        \"client\": {\n            \"id\": 1,\n            \"code\": \"K018\",\n            \"name\": \"Indrit Domi\",\n            \"created_at\": \"2025-11-06T08:49:58.000000Z\",\n            \"updated_at\": \"2025-11-06T08:49:58.000000Z\"\n        },\n        \"items\": [\n            {\n                \"id\": 5,\n                \"invoice_id\": 5,\n                \"product_name\": \"Uje Lajthiza\",\n                \"unit\": \"\",\n                \"quantity\": \"5.0000\",\n                \"unit_price\": \"5.0000\",\n                \"total_price\": \"25.00\",\n                \"vat_amount\": \"0.0000\",\n                \"description\": \"1 cope\",\n                \"created_at\": \"2025-11-06T08:50:06.000000Z\",\n                \"updated_at\": \"2025-11-06T08:50:06.000000Z\",\n                \"elif_item_id\": 569\n            },\n            {\n                \"id\": 14,\n                \"invoice_id\": 5,\n                \"product_name\": \"Uje Lajthiza\",\n                \"unit\": \"\",\n                \"quantity\": \"5.0000\",\n                \"unit_price\": \"5.0000\",\n                \"total_price\": \"25.00\",\n                \"vat_amount\": \"0.0000\",\n                \"description\": \"1 cope\",\n                \"created_at\": \"2025-11-10T07:53:52.000000Z\",\n                \"updated_at\": \"2025-11-10T07:53:52.000000Z\",\n                \"elif_item_id\": null\n            }\n        ]\n    },\n    {\n        \"id\": 6,\n        \"client_id\": 1,\n        \"invoice_number\": \"FSH30816\",\n        \"invoice_date\": \"2025-11-06\",\n        \"total_amount_eur\": \"165.00\",\n        \"total_with_vat\": \"165.00\",\n        \"total_amount_all\": \"0.00\",\n        \"currency\": \"EUR\",\n        \"base_currency\": \"ALL\",\n        \"created_at\": \"2025-11-06T08:50:07.000000Z\",\n        \"updated_at\": \"2025-11-10T07:53:52.000000Z\",\n        \"fisqal_qr_url\": null,\n        \"fiscalized_at\": null,\n        \"fiscalization_response\": null,\n        \"client\": {\n            \"id\": 1,\n            \"code\": \"K018\",\n            \"name\": \"Indrit Domi\",\n            \"created_at\": \"2025-11-06T08:49:58.000000Z\",\n            \"updated_at\": \"2025-11-06T08:49:58.000000Z\"\n        },\n        \"items\": [\n            {\n                \"id\": 6,\n                \"invoice_id\": 6,\n                \"product_name\": \"Uje Tepelena\",\n                \"unit\": \"\",\n                \"quantity\": \"33.0000\",\n                \"unit_price\": \"5.0000\",\n                \"total_price\": \"165.00\",\n                \"vat_amount\": \"0.0000\",\n                \"description\": \"1 cope\",\n                \"created_at\": \"2025-11-06T08:50:08.000000Z\",\n                \"updated_at\": \"2025-11-06T08:50:08.000000Z\",\n                \"elif_item_id\": 570\n            },\n            {\n                \"id\": 15,\n                \"invoice_id\": 6,\n                \"product_name\": \"Uje Tepelena\",\n                \"unit\": \"\",\n                \"quantity\": \"33.0000\",\n                \"unit_price\": \"5.0000\",\n                \"total_price\": \"165.00\",\n                \"vat_amount\": \"0.0000\",\n                \"description\": \"1 cope\",\n                \"created_at\": \"2025-11-10T07:53:52.000000Z\",\n                \"updated_at\": \"2025-11-10T07:53:52.000000Z\",\n                \"elif_item_id\": null\n            }\n        ]\n    },\n    {\n        \"id\": 7,\n        \"client_id\": 1,\n        \"invoice_number\": \"FSH30843\",\n        \"invoice_date\": \"2025-11-06\",\n        \"total_amount_eur\": \"543.25\",\n        \"total_with_vat\": \"543.25\",\n        \"total_amount_all\": \"0.00\",\n        \"currency\": \"EUR\",\n        \"base_currency\": \"ALL\",\n        \"created_at\": \"2025-11-06T08:50:08.000000Z\",\n        \"updated_at\": \"2025-11-10T07:53:52.000000Z\",\n        \"fisqal_qr_url\": null,\n        \"fiscalized_at\": null,\n        \"fiscalization_response\": null,\n        \"client\": {\n            \"id\": 1,\n            \"code\": \"K018\",\n            \"name\": \"Indrit Domi\",\n            \"created_at\": \"2025-11-06T08:49:58.000000Z\",\n            \"updated_at\": \"2025-11-06T08:49:58.000000Z\"\n        },\n        \"items\": [\n            {\n                \"id\": 7,\n                \"invoice_id\": 7,\n                \"product_name\": \"Gome\",\n                \"unit\": \"\",\n                \"quantity\": \"60.3600\",\n                \"unit_price\": \"9.0000\",\n                \"total_price\": \"543.24\",\n                \"vat_amount\": \"0.0000\",\n                \"description\": \"1 cope\",\n                \"created_at\": \"2025-11-06T08:50:10.000000Z\",\n                \"updated_at\": \"2025-11-06T08:50:10.000000Z\",\n                \"elif_item_id\": 560\n            },\n            {\n                \"id\": 16,\n                \"invoice_id\": 7,\n                \"product_name\": \"Gome\",\n                \"unit\": \"\",\n                \"quantity\": \"60.3600\",\n                \"unit_price\": \"9.0000\",\n                \"total_price\": \"543.24\",\n                \"vat_amount\": \"0.0000\",\n                \"description\": \"1 cope\",\n                \"created_at\": \"2025-11-10T07:53:52.000000Z\",\n                \"updated_at\": \"2025-11-10T07:53:52.000000Z\",\n                \"elif_item_id\": null\n            }\n        ]\n    },\n    {\n        \"id\": 8,\n        \"client_id\": 1,\n        \"invoice_number\": \"FSH30939\",\n        \"invoice_date\": \"2025-11-06\",\n        \"total_amount_eur\": \"547.51\",\n        \"total_with_vat\": \"547.51\",\n        \"total_amount_all\": \"0.00\",\n        \"currency\": \"EUR\",\n        \"base_currency\": \"ALL\",\n        \"created_at\": \"2025-11-06T08:50:10.000000Z\",\n        \"updated_at\": \"2025-11-10T07:53:52.000000Z\",\n        \"fisqal_qr_url\": null,\n        \"fiscalized_at\": null,\n        \"fiscalization_response\": null,\n        \"client\": {\n            \"id\": 1,\n            \"code\": \"K018\",\n            \"name\": \"Indrit Domi\",\n            \"created_at\": \"2025-11-06T08:49:58.000000Z\",\n            \"updated_at\": \"2025-11-06T08:49:58.000000Z\"\n        },\n        \"items\": [\n            {\n                \"id\": 8,\n                \"invoice_id\": 8,\n                \"product_name\": \"Printer\",\n                \"unit\": \"\",\n                \"quantity\": \"109.5000\",\n                \"unit_price\": \"5.0000\",\n                \"total_price\": \"547.50\",\n                \"vat_amount\": \"0.0000\",\n                \"description\": \"10 cope\",\n                \"created_at\": \"2025-11-06T08:50:11.000000Z\",\n                \"updated_at\": \"2025-11-06T08:50:11.000000Z\",\n                \"elif_item_id\": 571\n            },\n            {\n                \"id\": 17,\n                \"invoice_id\": 8,\n                \"product_name\": \"Printer\",\n                \"unit\": \"\",\n                \"quantity\": \"109.5000\",\n                \"unit_price\": \"5.0000\",\n                \"total_price\": \"547.50\",\n                \"vat_amount\": \"0.0000\",\n                \"description\": \"10 cope\",\n                \"created_at\": \"2025-11-10T07:53:52.000000Z\",\n                \"updated_at\": \"2025-11-10T07:53:52.000000Z\",\n                \"elif_item_id\": null\n            }\n        ]\n    },\n    {\n        \"id\": 9,\n        \"client_id\": 1,\n        \"invoice_number\": \"FSH31005\",\n        \"invoice_date\": \"2025-11-06\",\n        \"total_amount_eur\": \"273.75\",\n        \"total_with_vat\": \"273.75\",\n        \"total_amount_all\": \"0.00\",\n        \"currency\": \"EUR\",\n        \"base_currency\": \"ALL\",\n        \"created_at\": \"2025-11-06T08:50:11.000000Z\",\n        \"updated_at\": \"2025-11-10T07:53:52.000000Z\",\n        \"fisqal_qr_url\": null,\n        \"fiscalized_at\": null,\n        \"fiscalization_response\": null,\n        \"client\": {\n            \"id\": 1,\n            \"code\": \"K018\",\n            \"name\": \"Indrit Domi\",\n            \"created_at\": \"2025-11-06T08:49:58.000000Z\",\n            \"updated_at\": \"2025-11-06T08:49:58.000000Z\"\n        },\n        \"items\": [\n            {\n                \"id\": 9,\n                \"invoice_id\": 9,\n                \"product_name\": \"Cante shkolla\",\n                \"unit\": \"\",\n                \"quantity\": \"54.7500\",\n                \"unit_price\": \"5.0000\",\n                \"total_price\": \"273.75\",\n                \"vat_amount\": \"0.0000\",\n                \"description\": \"2 cope\",\n                \"created_at\": \"2025-11-06T08:50:13.000000Z\",\n                \"updated_at\": \"2025-11-06T08:50:13.000000Z\",\n                \"elif_item_id\": 572\n            },\n            {\n                \"id\": 18,\n                \"invoice_id\": 9,\n                \"product_name\": \"Cante shkolla\",\n                \"unit\": \"\",\n                \"quantity\": \"54.7500\",\n                \"unit_price\": \"5.0000\",\n                \"total_price\": \"273.75\",\n                \"vat_amount\": \"0.0000\",\n                \"description\": \"2 cope\",\n                \"created_at\": \"2025-11-10T07:53:52.000000Z\",\n                \"updated_at\": \"2025-11-10T07:53:52.000000Z\",\n                \"elif_item_id\": null\n            }\n        ]\n    },\n    {\n        \"id\": 10,\n        \"client_id\": 1,\n        \"invoice_number\": \"FSH31211\",\n        \"invoice_date\": \"2025-11-06\",\n        \"total_amount_eur\": \"120.00\",\n        \"total_with_vat\": \"120.00\",\n        \"total_amount_all\": \"0.00\",\n        \"currency\": \"EUR\",\n        \"base_currency\": \"ALL\",\n        \"created_at\": \"2025-11-06T08:50:13.000000Z\",\n        \"updated_at\": \"2025-11-10T07:53:52.000000Z\",\n        \"fisqal_qr_url\": null,\n        \"fiscalized_at\": null,\n        \"fiscalization_response\": null,\n        \"client\": {\n            \"id\": 1,\n            \"code\": \"K018\",\n            \"name\": \"Indrit Domi\",\n            \"created_at\": \"2025-11-06T08:49:58.000000Z\",\n            \"updated_at\": \"2025-11-06T08:49:58.000000Z\"\n        },\n        \"items\": []\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "http://127.0.0.1:8000/api/invoices/{id}",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8000/api/invoices/1",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"invoices",
+						"1"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "http://127.0.0.1:8000/api/invoices/{id}",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/invoices/1",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"invoices",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "Host",
+							"value": "127.0.0.1:8000"
+						},
+						{
+							"key": "Connection",
+							"value": "close"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "PHP/8.2.12"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, private"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 10 Nov 2025 08:07:49 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"client_id\": 1,\n    \"invoice_number\": \"FSH27443\",\n    \"invoice_date\": \"2025-11-06\",\n    \"total_amount_eur\": \"85.59\",\n    \"total_with_vat\": \"85.59\",\n    \"total_amount_all\": \"0.00\",\n    \"currency\": \"EUR\",\n    \"base_currency\": \"ALL\",\n    \"created_at\": \"2025-11-06T08:49:58.000000Z\",\n    \"updated_at\": \"2025-11-10T07:53:52.000000Z\",\n    \"fisqal_qr_url\": null,\n    \"fiscalized_at\": null,\n    \"fiscalization_response\": null,\n    \"client\": {\n        \"id\": 1,\n        \"code\": \"K018\",\n        \"name\": \"Indrit Domi\",\n        \"created_at\": \"2025-11-06T08:49:58.000000Z\",\n        \"updated_at\": \"2025-11-06T08:49:58.000000Z\"\n    },\n    \"items\": [\n        {\n            \"id\": 1,\n            \"invoice_id\": 1,\n            \"product_name\": \"Kase Telefoni\",\n            \"unit\": \"\",\n            \"quantity\": \"17.1200\",\n            \"unit_price\": \"5.0000\",\n            \"total_price\": \"85.58\",\n            \"vat_amount\": \"0.0000\",\n            \"description\": \"Kase 3 cope\",\n            \"created_at\": \"2025-11-06T08:50:00.000000Z\",\n            \"updated_at\": \"2025-11-06T08:50:00.000000Z\",\n            \"elif_item_id\": 565\n        },\n        {\n            \"id\": 10,\n            \"invoice_id\": 1,\n            \"product_name\": \"Kase Telefoni\",\n            \"unit\": \"\",\n            \"quantity\": \"17.1200\",\n            \"unit_price\": \"5.0000\",\n            \"total_price\": \"85.58\",\n            \"vat_amount\": \"0.0000\",\n            \"description\": \"Kase 3 cope\",\n            \"created_at\": \"2025-11-10T07:53:52.000000Z\",\n            \"updated_at\": \"2025-11-10T07:53:52.000000Z\",\n            \"elif_item_id\": null\n        }\n    ]\n}"
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL",
+			"value": "",
+			"type": "default"
+		}
+	]
+}

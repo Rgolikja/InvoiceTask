@@ -1,9 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\User;
+use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
@@ -17,32 +18,28 @@ class AuthController extends Controller
                 'username' => 'required',
                 'password' => 'required',
             ]);
-            //marrim vetem username password nga requesti
-            $credentials = $request->only('username', 'password');
-            //perpiqemi te bejm login me funksionin e classes Auth::attempt
-            return response()->json(User::all());
-
-            if (!Auth::attempt($credentials)) {
+            //marrim vetem username  nga requesti
+            $user = User::where('username', $request->username)->first();
+            if (!$user || !Hash::check($request->password, $user->password)) {
                 return response()->json([
                     'message' => 'Invalid username or password'
                 ], 401);
             }
-
-            $user = Auth::user();
             $token = $user->createToken('auth_token')->plainTextToken;
 
             return response()->json([
-                'message' => 'Login successful',
+                'message' => 'Login succesfully',
                 'token' => $token,
                 'role' => $user->role,
                 'user' => $user->username,
             ]);
-        } catch (\Exception $e) {
+
+
+        } catch (Exception $e) {
             return response()->json([
-                'message' => 'unexcpeted error',
+                'message' => 'Unexpected error',
                 'error' => $e->getMessage()
             ], 500);
         }
-
     }
 }

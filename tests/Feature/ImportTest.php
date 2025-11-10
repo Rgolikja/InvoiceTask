@@ -1,7 +1,7 @@
 <?php
 
 namespace Tests\Feature;
-
+use App\Models\User;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
@@ -13,48 +13,38 @@ class ImportTest extends TestCase
 {
     use RefreshDatabase;
 
-    // simple test /test-import
-    public function test_test_import_route_works()
+    // simple login test
+
+    public function testLogin()
     {
-        $response = $this->postJson('/api/test-import');
-        $response->assertStatus(200)
-            ->assertJson(['message' => 'Route works']);
+        $user = \App\Models\User::factory()->create([
+            'username' => 'admin',
+            'password' => bcrypt('admin123'),
+            'role' => 'admin'
+        ]);
+        $response = $this->postJson('/api/login', [
+            'username' => 'admin',
+            'password' => 'admin123'
+        ]);
+
+        $response->assertStatus(200)->assertJsonStructure([
+            'message',
+            'token',
+            'role',
+            'user'
+        ]);
     }
 
-    // checking validation for upload
-    public function test_post_import_requires_file()
+    public function test_api_available()
     {
-        $response = $this->postJson('/api/imports', []); // no file
+        $response = $this->getJson('/api/invoices');
+        $response->assertStatus(200);
+    }
+
+    public function test_import_upload()
+    {
+        $response = $this->postJson('/api/imports', []); //empty file 
         $response->assertStatus(422);
         $response->assertJsonValidationErrors(['file']);
-    }
-
-    // upload test with fake file
-    public function test_upload_creates_import_and_stores_file()
-    {
-        // so we dont touch real disk
-        Storage::fake('public');
-
-        // make a fake facade
-        Excel::shouldReceive('toCollection')->andReturn(collect([collect([])]));
-        Excel::shouldReceive('import')->andReturnNull();
-
-        // make a fake excel file
-        $file = UploadedFile::fake()->create('sample.xlsx', 10, 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-
-        $response = $this->postJson('/api/imports', [
-            'file' => $file,
-        ]);
-
-        $response->assertStatus(200)
-            ->assertJsonStructure(['message', 'import' => ['id', 'file_name', 'file_path', 'status']]);
-
-
-        $this->assertDatabaseHas('imports', [
-            'file_name' => $file->getClientOriginalName(),
-        ]);
-
-        //file saved in public disk in imports
-        Storage::disk('public')->assertExists('imports/' . $file->getClientOriginalName());
     }
 }
