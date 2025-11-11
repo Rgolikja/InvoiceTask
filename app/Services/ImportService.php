@@ -44,7 +44,7 @@ class ImportService implements ImportServiceInterface
                 if ($line === '' || stripos($line, 'Regjistri') !== false)
                     continue;
 
-                /*** 🧾 Detect invoice header ***/
+                /***  Detect invoice header ***/
                 if (isset($row['A']) && stripos($row['A'], 'Nr:') !== false) {
                     $invoiceNumber = trim(str_replace('Nr:', '', ($row['A'] ?? '') . ' ' . ($row['B'] ?? '')));
                     $invoiceNumber = preg_replace('/[^A-Z0-9]/i', '', $invoiceNumber);
@@ -70,13 +70,15 @@ class ImportService implements ImportServiceInterface
                         continue;
                     }
 
-                    /*** 👤 Detect client info ***/
+                    /***  Detect client info ***/
                     $clientCode = null;
                     $clientName = null;
                     for ($i = 1; $i <= 3; $i++) {
                         if (!isset($rows[$index + $i]))
                             break;
                         $nextRow = $rows[$index + $i];
+
+
                         foreach ($nextRow as $col => $value) {
                             $value = (string) $value;
                             if (stripos($value, 'Klienti:') !== false) {
@@ -112,6 +114,7 @@ class ImportService implements ImportServiceInterface
                     }
 
                     $existing = Invoice::where('invoice_number', $invoiceNumber)->first();
+                    
                     if ($existing) {
                         $currentInvoice = $existing;
                         $debug[] = "Reusing existing invoice {$invoiceNumber}.";
@@ -160,7 +163,7 @@ class ImportService implements ImportServiceInterface
                     continue;
                 }
 
-                /*** 📦 Detect item rows ***/
+                /***  Detect item rows ***/
                 if ($mode === 'reading_items' && $currentInvoice) {
                     // Detect totals
                     if (stripos($line, 'Shuma me TVSH') !== false || stripos($line, 'Shuma pa TVSH') !== false) {
@@ -174,7 +177,7 @@ class ImportService implements ImportServiceInterface
                             'total_amount_all' => $allTotal,
                         ]);
 
-                        $debug[] = "💶 Updated totals for invoice {$currentInvoice->invoice_number}: EUR={$eurTotal}, ALL={$allTotal}";
+                        $debug[] = " Updated totals for invoice {$currentInvoice->invoice_number}: EUR={$eurTotal}, ALL={$allTotal}";
                         $mode = 'searching_header';
                         continue;
                     }
@@ -193,13 +196,13 @@ class ImportService implements ImportServiceInterface
                             }
                         }
 
-                        // ✅ Map numeric columns (Layout A)
+                        //  Map numeric columns (Layout A)
                         $quantity = $numbers[0] ?? 0;
                         $unitPrice = $numbers[1] ?? 0;
                         $totalPrice = $numbers[2] ?? 0;
                         $totalAll = $numbers[count($numbers) - 1] ?? 0; // ✅ last numeric = ALL
 
-                        // ✅ Description is last non-numeric text
+                        //  Description is last non-numeric text
                         $description = '';
                         foreach (array_reverse($values) as $v) {
                             $v = trim((string) $v);
@@ -223,7 +226,7 @@ class ImportService implements ImportServiceInterface
                             'description' => $description,
                         ]);
 
-                        // ✅ Update invoice totals
+                        //  Update invoice totals
                         $currentInvoice->update([
                             'total_amount_eur' => $totalPrice,
                             'total_with_vat' => $totalPrice,
@@ -231,7 +234,7 @@ class ImportService implements ImportServiceInterface
                         ]);
 
                         $summary['items_created']++;
-                        $debug[] = "🧩 Added '{$productName}' (Unit={$unit}, Qty={$quantity}, Price={$unitPrice}, EUR={$totalPrice}, ALL={$totalAll}, Desc='{$description}').";
+                        $debug[] = " Added '{$productName}' (Unit={$unit}, Qty={$quantity}, Price={$unitPrice}, EUR={$totalPrice}, ALL={$totalAll}, Desc='{$description}').";
                     }
                 }
             }
@@ -278,10 +281,11 @@ class ImportService implements ImportServiceInterface
         $import->delete();
         return true;
     }
-    // public function getImportById(int $id){
-//     $import=Import::findOrFail($id);
-//     return
-// }
+    public function getImportById(int $id)
+    {
+        return Import::findOrFail($id);
+
+    }
     public function getAllImports(int $perPage)
     {
         return Import::orderBy('created_at', 'desc')->paginate($perPage);

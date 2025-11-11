@@ -3,19 +3,26 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
-use Illuminate\Http\Request;
 
 class Authenticate extends Middleware
 {
     /**
-     * Handle unauthenticated requests.
+     * Get the path the user should be redirected to when they are not authenticated.
+     * For APIs, return null so Laravel returns a 401 JSON instead of redirecting.
      */
-    protected function redirectTo($request)
+    protected function redirectTo($request): ?string
     {
-        if ($request->expectsJson()) {
-            return null;
+        // If request expects JSON, return null (prevents redirect)
+        if (!$request->expectsJson()) {
+            abort(response()->json(
+                [
+                    'error' => 'Unauthenticated use valid token'
+                ],
+                401
+
+            ));
         }
+
+
     }
-
-
 }

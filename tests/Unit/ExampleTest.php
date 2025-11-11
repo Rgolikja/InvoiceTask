@@ -6,15 +6,13 @@ use PHPUnit\Framework\TestCase;
 
 class ExampleTest extends TestCase
 {
-    /**
-     * A basic test example.
-     */
-    public function test_that_true_is_true(): void
+
+    public function laravel_working()
     {
-        $this->assertTrue(true);
-    }
-    public function test_basic_test(): void
-    {
-        $this->assertTrue(true);
+        $response = $this->get('/');
+        $this->assertTrue(
+            in_array($response->getStatusCode(), [200, 302]),
+            "Laravel app isnt responding"
+        );
     }
 }

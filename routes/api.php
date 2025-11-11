@@ -9,44 +9,46 @@ use App\Http\Controllers\InvoiceController;
 
 //AUTH ROUTES
 // //route to login
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 
 
 //PUBLIC ROUTES
 //route to all invoices
-// Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
 
-Route::get('/invoices', [InvoiceController::class, 'index']);
+    Route::get('/invoices', [InvoiceController::class, 'index']);
 
-//route to specific invoice
-Route::get('/invoices/{id}', [InvoiceController::class, 'show']);
+    //route to specific invoice
+    Route::get('/invoices/{id}', [InvoiceController::class, 'show']);
 
-//route to all imports
-Route::get('/imports', [ImportController::class, 'index']);
+    //route to all imports
+    Route::get('/imports', [ImportController::class, 'index']);
 
-Route::get('/imports/{id}', [ImportController::class, 'show']);
-
-
-
-// //ADMIN ROUTES
-// Route::middleware('admin')->group(function () {
+    Route::get('/imports/{id}', [ImportController::class, 'show']);
 
 
-//route to upload an import
-Route::post('/imports', [ImportController::class, 'importExcelData']);
 
-//route to update an import
-Route::put('/imports/{id}', [ImportController::class, 'update']);
-
-//route to delete an import
-Route::delete('/imports/{id}', [ImportController::class, 'destroy']);
-
-Route::post('/fiscalize/{invoice}', [ElifController::class, 'fiscalize']);//route to fiscalize
+    // //ADMIN ROUTES
+    Route::middleware(['auth:sanctum', 'admin'])->group(function () {
 
 
-//     });
-// });
+
+
+        //route to upload an import
+        Route::post('/imports', [ImportController::class, 'importExcelData']);
+
+        //route to update an import
+        Route::put('/imports/{id}', [ImportController::class, 'update']);
+
+        //route to delete an import
+        Route::delete('/imports/{id}', [ImportController::class, 'destroy']);
+
+        Route::post('/fiscalize/{invoice}', [ElifController::class, 'fiscalize']);//route to fiscalize
+
+
+    });
+});
 
 
 

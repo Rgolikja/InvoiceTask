@@ -14,12 +14,26 @@ class AdminMiddleware
     {
 
         //kontrollojm nese nje user esht logged in ose esht admin
-        if (!Auth::check() || Auth::user()->role !== 'admin') {
+        if (!Auth::check()) {
+            Log::warning('Unauthorized access no token', [
+                'path' => $request->path(),
+                'ip' => $request->ip,
+            ]);
             return response()->json([
-                'error' => 'Unauthorized only admin access'
-            ], 403);
+                'error' => 'unauthenticated'
+            ], 401);
         }
 
+
+        if ((Auth()->user()->role !== 'admin')) {
+            Log::warning('not an admin', [
+                'user' => auth()->user()->username,
+                'path' => $request->path(),
+            ]);
+            return response()->json([
+                'error' => 'admin only'
+            ], 403);
+        }
         return $next($request);
     }
 }
