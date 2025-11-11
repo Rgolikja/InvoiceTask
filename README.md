@@ -117,14 +117,4 @@ Criteria Description
 📄 Documentation Clear, complete API documentation and Postman collection
 ✅ Deliverables
 
-Full Laravel project with working CRUD + Excel Import
 
-PostgreSQL migrations
-
-Cron job for invoice submission
-
-Postman collection
-
-API documentation
-
-FlashBack recordings
