@@ -35,16 +35,17 @@ class ImportService implements ImportServiceInterface
             $spreadsheet = IOFactory::load($file->getRealPath());
             $sheet = $spreadsheet->getActiveSheet();
             $rows = $sheet->toArray(null, true, true, true);
-
+            //inicializojm variablat per importimin e te te dhenave    
             $currentInvoice = null;
+            //variabli mode per te ndjekur cfare pjese te importit jemi
             $mode = 'searching_header';
-
+            //loop neper rreshtat e excelit 
             foreach ($rows as $index => $row) {
                 $line = trim(implode('', array_map('strval', $row)));
                 if ($line === '' || stripos($line, 'Regjistri') !== false)
                     continue;
 
-                /***  Detect invoice header ***/
+                // kerkojme per headerin e fatures
                 if (isset($row['A']) && stripos($row['A'], 'Nr:') !== false) {
                     $invoiceNumber = trim(str_replace('Nr:', '', ($row['A'] ?? '') . ' ' . ($row['B'] ?? '')));
                     $invoiceNumber = preg_replace('/[^A-Z0-9]/i', '', $invoiceNumber);
@@ -53,6 +54,7 @@ class ImportService implements ImportServiceInterface
 
                     $invoiceDate = null;
                     $currency = 'EUR';
+                    //kerkojme per daten dhe monedhen e fatures
                     foreach ($row as $cell) {
                         $cell = (string) $cell;
                         if (stripos($cell, 'Date dokumenti:') !== false) {
@@ -70,7 +72,7 @@ class ImportService implements ImportServiceInterface
                         continue;
                     }
 
-                    /***  Detect client info ***/
+                    //kerkojme per informacionin e klientit ne rreshtat e ardhshme
                     $clientCode = null;
                     $clientName = null;
                     for ($i = 1; $i <= 3; $i++) {
@@ -78,7 +80,7 @@ class ImportService implements ImportServiceInterface
                             break;
                         $nextRow = $rows[$index + $i];
 
-
+                        //loop neper kolonat e rreshtit te ardhshem
                         foreach ($nextRow as $col => $value) {
                             $value = (string) $value;
                             if (stripos($value, 'Klienti:') !== false) {
@@ -100,21 +102,21 @@ class ImportService implements ImportServiceInterface
                         $mode = 'searching_header';
                         continue;
                     }
-
+                    //gjejm ose krijojm klientin
                     $client = Client::firstOrCreate(
                         ['code' => $clientCode],
                         ['name' => $clientName ?? 'Unknown']
                     );
-
+                    //nese eshte krijuar nje klient i ri rrisim numrin e klienteve te lidhur 
                     if ($client->wasRecentlyCreated) {
                         $summary['clients_linked']++;
                         $debug[] = "Created new client: {$clientCode} ({$clientName})";
                     } else {
                         $debug[] = "Found existing client: {$clientCode}";
                     }
-
+                    // Kontrollojm nese fatura ekziston ndaj e rimarrim ose krijojm nje te re
                     $existing = Invoice::where('invoice_number', $invoiceNumber)->first();
-                    
+
                     if ($existing) {
                         $currentInvoice = $existing;
                         $debug[] = "Reusing existing invoice {$invoiceNumber}.";
@@ -130,7 +132,7 @@ class ImportService implements ImportServiceInterface
                         ]);
                         $summary['invoices_created']++;
                         $debug[] = "Created new invoice {$invoiceNumber}.";
-                        //after invoices are created we try to fiscalize them
+                        //pasi faturat jane krijuar provojme ti fiskalizojme ato
                         try {
                             $elifService = new \App\Services\ElifApiService();
                             $token = $elifService->login();
@@ -163,9 +165,9 @@ class ImportService implements ImportServiceInterface
                     continue;
                 }
 
-                /***  Detect item rows ***/
+                //kerkojme per rreshtat e produkteve te fatures
                 if ($mode === 'reading_items' && $currentInvoice) {
-                    // Detect totals
+                    // gjejme totalet
                     if (stripos($line, 'Shuma me TVSH') !== false || stripos($line, 'Shuma pa TVSH') !== false) {
                         preg_match_all('/([\d\.,]+)/', $line, $matches);
                         $eurTotal = isset($matches[1][0]) ? $this->toDecimal($matches[1][0]) : 0;
@@ -182,27 +184,27 @@ class ImportService implements ImportServiceInterface
                         continue;
                     }
 
-                    // Detect product lines
+                    // gjejme rreshtat e produkteve
                     if ($row['A'] && !str_starts_with($row['A'], 'Klienti:')) {
                         $productName = trim($row['A']);
-                        $unit = trim($row['B'] ?? ''); // ✅ Unit column (B)
+                        $unit = trim($row['B'] ?? '');
                         $values = array_values($row);
                         $numbers = [];
 
-                        // Collect all numeric values
+                        // mbledhim numrat nga rreshti i produktit 
                         foreach ($values as $v) {
                             if (preg_match('/^\d+([.,]\d+)?$/', trim($v))) {
                                 $numbers[] = $this->toDecimal($v);
                             }
                         }
 
-                        //  Map numeric columns (Layout A)
+                        //  bejme map te kolonave numerike
                         $quantity = $numbers[0] ?? 0;
                         $unitPrice = $numbers[1] ?? 0;
                         $totalPrice = $numbers[2] ?? 0;
-                        $totalAll = $numbers[count($numbers) - 1] ?? 0; // ✅ last numeric = ALL
+                        $totalAll = $numbers[count($numbers) - 1] ?? 0;
 
-                        //  Description is last non-numeric text
+                        // marrim pershkrimin nga fundi i rreshtit
                         $description = '';
                         foreach (array_reverse($values) as $v) {
                             $v = trim((string) $v);
@@ -214,7 +216,7 @@ class ImportService implements ImportServiceInterface
 
                         if ($productName === '' || $totalPrice == 0)
                             continue;
-
+                        // krijojm rreshtin e produktit me te dhenat e marra
                         InvoiceItem::create([
                             'invoice_id' => $currentInvoice->id,
                             'product_name' => $productName,
@@ -226,7 +228,7 @@ class ImportService implements ImportServiceInterface
                             'description' => $description,
                         ]);
 
-                        //  Update invoice totals
+                        // update totalet e fatures
                         $currentInvoice->update([
                             'total_amount_eur' => $totalPrice,
                             'total_with_vat' => $totalPrice,
@@ -257,11 +259,12 @@ class ImportService implements ImportServiceInterface
         }
     }
 
+    //funksion ndihmes per konvertimin e vlerave numerike ne formatin decimal
     private function toDecimal($value)
     {
         return floatval(str_replace([',', ' '], ['.', ''], $value));
     }
-
+    //funksion ndihmes per konvertimin e datave ne formatin d/m/Y
     private function parseDate($value)
     {
         $date = \DateTime::createFromFormat('d/m/Y', trim($value));
