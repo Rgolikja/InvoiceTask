@@ -76,4 +76,26 @@ class InvoiceTotalTest extends TestCase
         $this->assertEquals(1170, $expectedTotal);
         $this->assertEquals(1170, $invoice->fresh()->total_amount_eur);
     }
+    public function test_empty_invoices()
+    {
+        $client = Client::create([
+            'name' => 'Empty Name',
+            'code' => 'AA000'
+        ]);
+        $invoice = Invoice::create([
+            'client_id' => $client->id,
+            'invoice_number' => 'INV-000',
+            'invoice_date' => now(),
+            'total_amount_eur' => 0,
+            'total_with_vat' => 0,
+            'total_amount_all' => 0,
+            'currency' => 'EUR',
+            'base_currency' => 'ALL',
+        ]);
+
+        $expectedTotal = $invoice->items->sum('total_price');
+
+        $this->assertEquals(0, $expectedTotal);
+        $this->assertEquals(0, $invoice->fresh()->total_amount_eur);
+    }
 }

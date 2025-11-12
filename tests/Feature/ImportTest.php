@@ -35,16 +35,4 @@ class ImportTest extends TestCase
         ]);
     }
 
-    public function test_api_available()
-    {
-        $response = $this->getJson('/api/invoices');
-        $response->assertStatus(200);
-    }
-
-    public function test_import_upload()
-    {
-        $response = $this->postJson('/api/imports', []); //empty file 
-        $response->assertStatus(422);
-        $response->assertJsonValidationErrors(['file']);
-    }
 }

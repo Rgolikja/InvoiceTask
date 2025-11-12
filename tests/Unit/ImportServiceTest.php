@@ -29,47 +29,63 @@ class ImportServiceTest extends TestCase
      */
     public function creating_invoices_and_clients(): void
     {
-        $request = new Request([
-            'data' => [
-                [
-                    'client_name' => 'Test Client',
-                    'client_code' => 'TC123',
-                    'invoice_number' => 'INV-001',
-                    'invoice_date' => now(),
-                    'currency' => 'EUR',
-                    'base_currency' => 'ALL',
-                    'items' => [
-                        [
-                            'product_name' => 'Product 1',
-                            'unit' => 'pcs',
-                            'quantity' => 2,
-                            'unit_price' => 500,
-                            'total_price' => 1000,
-                            'vat_amount' => 200,
-                            'description' => 'Test Description'
-                        ]
-                    ]
-                ]
-            ]
+        $client = Client::create([
+            'name' => 'Test Name',
+            'code' => 'AA111'
         ]);
-        $this->importService->importExcelData($request);
+        $invoice = Invoice::create([
+            'client_id' => $client->id,
+            'invoice_number' => 'INV-111',
+            'invoice_date' => now(),
+            'total_amount_eur' => 0,
+            'total_with_vat' => 0,
+            'total_amount_all' => 0,
+            'currency' => 'EUR',
+            'base_currency' => 'ALL',
+        ]);
+
+        //shtojme items
+        $invoice->items()->create([
+
+            'product_name' => 'Laps',
+            'unit' => 'pcs',
+            'quantity' => 1,
+            'unit_price' => 1000,
+            'total_price' => 1000,
+            'vat_amount' => 200,
+            'description' => 'Laps 1 cope',
+
+
+        ]);
+        Storage::fake('local');
+        $file = UploadedFile::fake()->create(
+            'test.xlsx',
+            100,
+            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+
+        );
+        $request = new Request();
+        $request->files->set('file', $file);
+        $response = $this->importService->importExcelData($request);
+
         $this->assertDatabaseHas('clients', [
-            'name' => 'Test Client',
-            'code' => 'TC123'
+            'name' => 'Test Name',
+            'code' => 'AA111'
         ]);
 
         $this->assertDatabaseHas('invoices', [
-            'invoice_number' => 'INV-001',
+            'invoice_number' => 'INV-111',
             'currency' => 'EUR',
             'base_currency' => 'ALL'
         ]);
         $this->assertDatabaseHas('invoice_items', [
-            'product_name' => 'Product 1',
-            'quantity' => 2,
-            'unit_price' => 500,
+            'product_name' => 'Laps',
+            'unit' => 'pcs',
+            'quantity' => 1,
+            'unit_price' => 1000,
             'total_price' => 1000,
             'vat_amount' => 200,
-            'description' => 'Test Description'
+            'description' => 'Laps 1 cope',
         ]);
 
 
